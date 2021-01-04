@@ -1,4 +1,4 @@
-# ScoreTubeServer
+# ScoreTubeClient
 
 ### Install
 * install module
