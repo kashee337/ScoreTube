@@ -17,10 +17,11 @@ const Video = () => {
         dispatch(incrementVideo());
     }
 
-    var video_url = "https://www.youtube.com/embed/icFRHJ9VZaw";
+    var video_url = "https://www.youtube.com/embed/sBZa7-2bG2I";
 
     if (numVideo > 0) {
         video_url = 'https://www.youtube.com/embed/' + videoItems[videoNumber].id.videoId;
+        console.log("play", video_url)
     }
 
     return (
