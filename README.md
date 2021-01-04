@@ -5,18 +5,12 @@
 * 登録した楽譜の検索
 
 ### How To Use
+YoutubeのAPIキーが必要なので事前に取得し下記手順で設定して下さい。  
 
 #### 手動起動
-1. client
-```
-$ cd client 
-$ python app.py
-```
-2 server
-```
-$ cd server
-$ npm start
-```
+1. [client](/client/README.md)
+2. [server](/server/README.md)
+
 #### Docker
 TBD
 
