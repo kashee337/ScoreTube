@@ -1,0 +1,10 @@
+.Pdf {
+    margin: auto;
+    position: absolute;
+    text-align: center;
+    height: 50vh;
+    padding: 50px 150px;
+}
+.inner {
+    height: 50vh;
+}

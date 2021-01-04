@@ -1,0 +1,12 @@
+.logo {
+    width: 140px;
+    height: 40px;
+    margin: 13px 21px 16px 0;
+    float: left;
+    background-image: url("../../../logo.png");
+    background-size: cover;
+  }
+  
+  .header {
+    background-color: rgb(45, 43, 43);
+  }

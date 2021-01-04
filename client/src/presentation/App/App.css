@@ -1,0 +1,15 @@
+.App {
+  height: 100vh;
+  background-color:rgb(28, 27, 27);
+  color: white;
+}
+
+.App-content{
+  /* height: 100vh; */
+  background-color:rgb(28, 27, 27);
+  color: white;
+}
+
+.App-list {
+  background-color: white;
+}
