@@ -16,7 +16,7 @@ const App = () => {
   const pdf_path = useSelector(state => state.search.pdfPath);
 
   const LeftContent = isSearch ? <List /> : <Pdf pdf_path={pdf_path} />;
-
+  const LeftClassName = isSearch ? "App-list" : "App-pdf";
   return (
     <div className="App">
       <Layout>
@@ -24,7 +24,7 @@ const App = () => {
         <Layout>
           <Content className="App-content">
             <Row>
-              <Col span={10}>
+              <Col span={10} className={LeftClassName}>
                 {LeftContent}
               </Col>
               <Col span={14}>

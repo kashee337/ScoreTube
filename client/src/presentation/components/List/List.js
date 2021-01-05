@@ -43,7 +43,7 @@ const SongList = (props) => {
     return (
       <List.Item key={key}>
         <List.Item.Meta
-          avatar={<Avatar src="https://images-na.ssl-images-amazon.com/images/I/41yYs%2BnY12L._AC_SX425_.jpg" />}
+          avatar={<Avatar src="https://illustration-free.net/thumb/png/ifn0443.png" />}
           title={<a>{title}</a>}
           description={composer}
           onClick={() => { handleClick([path, title, composer]) }}
