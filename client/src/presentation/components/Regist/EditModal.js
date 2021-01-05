@@ -18,6 +18,9 @@ const EditModal = () => {
         dispatch(setEditInfo(edit_pool))
         dispatch(setEditting(false));
         message.info("編集結果を一時保存しました")
+        if (edit_pool.some(value => value.title.length == 0)) {
+            message.warn("未編集の項目があります")
+        }
     };
 
     return (
