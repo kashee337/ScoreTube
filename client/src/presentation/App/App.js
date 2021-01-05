@@ -13,50 +13,30 @@ const { Content } = Layout;
 const App = () => {
 
   const isSearch = useSelector(state => state.search.isSearch);
-  const pdf_path = useSelector(state => state.search.pdfPath);//`${process.env.PUBLIC_URL}/sample.pdf`
+  const pdf_path = useSelector(state => state.search.pdfPath);
 
-  if (isSearch) {
-    return (
-      <div className="App">
+  const LeftContent = isSearch ? <List /> : <Pdf pdf_path={pdf_path} />;
+
+  return (
+    <div className="App">
+      <Layout>
+        <ToolHeader></ToolHeader>
         <Layout>
-          <ToolHeader></ToolHeader>
-          <Layout>
-            <Content className="App-content">
-              <Row>
-                <Col span={10} className="App-list">
-                  <List />
-                </Col>
-                <Col span={14}>
-                  <Video />
-                </Col>
-              </Row>
-            </Content>
-          </Layout>
+          <Content className="App-content">
+            <Row>
+              <Col span={10}>
+                {LeftContent}
+              </Col>
+              <Col span={14}>
+                <Video />
+              </Col>
+            </Row>
+          </Content>
         </Layout>
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className="App">
-        <Layout>
-          <ToolHeader></ToolHeader>
-          <Layout>
-            <Content className="App-content">
-              <Row>
-                <Col span={10}>
-                  <Pdf pdf_path={pdf_path} />
-                </Col>
-                <Col span={14}>
-                  <Video />
-                </Col>
-              </Row>
-            </Content>
-          </Layout>
-        </Layout>
-      </div>
-    );
-  }
+      </Layout>
+    </div>
+  );
+
 }
 
 export default App;
