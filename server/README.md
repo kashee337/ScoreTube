@@ -1,4 +1,4 @@
-# ScoreTubeClient
+# ScoreTubeServer
 
 ### Requirements  
 * python3.8+
