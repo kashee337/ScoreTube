@@ -1,8 +1,8 @@
 import { Button, Space } from 'antd/es';
 import { useDispatch, useSelector } from "react-redux";
 import { decrementVideo, incrementVideo } from "../../../features/video/videoSlice";
+import "./Video.css";
 import VideoSearchFrom from './VideoSearchForm';
-
 const Video = () => {
     const dispatch = useDispatch();
     const videoItems = useSelector(state => state.video.videoItems)
@@ -25,15 +25,16 @@ const Video = () => {
     }
 
     return (
-        <div style={{ margin: '100px', textAlign: 'center' }}>
+        <div className="Video">
             <VideoSearchFrom />
             <iframe
                 id="ytplayer"
                 type="ytplayer"
-                width="840"
-                height="480"
                 src={video_url}
-                frameBorder="0" />
+                frameBorder="0"
+                className="Video-content"
+            />
+
             <Space size={[5, 5]}>
                 <Button disabled={videoNumber == 0}
                     onClick={previousVideo}

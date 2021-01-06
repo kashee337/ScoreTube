@@ -1,0 +1,11 @@
+.Video{
+    position: fixed; 
+    top: 20%;
+    text-align: center;
+}
+
+.Video-content{
+    display: block;
+    width: 50vw;
+    height: 60vh;
+}
