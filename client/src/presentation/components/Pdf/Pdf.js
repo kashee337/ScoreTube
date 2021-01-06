@@ -39,6 +39,7 @@ const SinglePage = (props) => {
       <div className="Pdf">
         <div>
           <PDFDocumentWrapper>
+            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
             <Document
               file={pdf_path}
               options={{ workerSrc: "/pdf.worker.js" }}
@@ -46,9 +47,7 @@ const SinglePage = (props) => {
             >
               <Page pageNumber={pageNumber} />
             </Document>
-            <p>
-              Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-            </p>
+
           </PDFDocumentWrapper>
         </div>
         <div>
