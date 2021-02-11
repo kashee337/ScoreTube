@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./server
+    image: st-server
+    container_name: st-server
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - PDF_DIR=pdf/
+      - DB_DIR=db/
+    volumes:
+      - ./data/pdf:/opt/app/pdf
+      - ./data/db:/opt/app/db
+
+  client:
+    build:
+      context: ./client
+    image: st-client
+    container_name: st-client
+    ports:
+      - "3000:3000"
+    env_file: 
+      - ./client/.env
+    volumes:
+      - ./data/pdf:/usr/app/public/pdf
