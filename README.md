@@ -7,11 +7,6 @@
 ### Usage
 YoutubeのAPIキーが必要なので事前に取得し、`client/.env`内に`REACT_APP_YOUTUBE_API_KEY`として定義してください。
 
-#### 手動起動
-1. [client](/client/README.md)
-2. [server](/server/README.md)
-
-#### Docker
 * 起動  
 `$ docker-compose up -d --build`
 * Access  
