@@ -4,15 +4,17 @@
 * 楽譜の登録
 * 登録した楽譜の検索
 
-### How To Use
-YoutubeのAPIキーが必要なので事前に取得し下記手順で設定して下さい。  
+### Usage
+YoutubeのAPIキーが必要なので事前に取得し、`client/.env`内に`REACT_APP_YOUTUBE_API_KEY`として定義してください。
 
 #### 手動起動
 1. [client](/client/README.md)
 2. [server](/server/README.md)
 
 #### Docker
-TBD
-
+* 起動  
+`$ docker-compose up -d --build`
+* Access  
+`http://localhost:3000`
 ### UI
 <img src="cap.png"/>
