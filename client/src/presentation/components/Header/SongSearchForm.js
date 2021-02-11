@@ -16,6 +16,7 @@ const SearchForm = () => {
 
     const getSongList = (searchQuery) => {
         const url = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/search`;
+        console.log("search", url, searchQuery);
         axios.get(url, { params: { s_query: searchQuery, q_type: searchType } }).then(
             res => {
                 if (res.data.error) {
