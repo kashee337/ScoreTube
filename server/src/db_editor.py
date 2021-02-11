@@ -1,20 +1,31 @@
 import glob
+import logging
 import sqlite3
 import sys
 from collections import defaultdict
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent))
-import const
-
-DATA_BASE = Path(__file__).parent / const.DATA_BASE
-PUBLIC_DIR = Path(__file__).parent / const.PUBLIC_DIR
+logger = logging.getLogger(__file__)
 
 
 class DbEditor:
-    def __init__(self, db_path=DATA_BASE):
+    def __init__(self, pdf_dir, db_dir):
+        db_path = Path(db_dir) / "song.db"
+        self.pdf_dir = Path(pdf_dir)
+        logger.debug(f"db_path:{db_path}")
+        logger.debug(f"pdf_dir:{pdf_dir}")
         self.connect = sqlite3.connect(db_path)
-        self.score_reader = None
+
+        # create
+        cur = self.connect.cursor()
+        cmd = """CREATE TABLE IF NOT EXISTS song(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title VARCHAR NOT NULL,
+                composer VARCHAR,
+                path VARCHAR NOT NULL
+        )"""
+        cur.execute(cmd)
+
         self.clear()
 
     def search(self, search_query, q_type="title"):
@@ -37,7 +48,6 @@ class DbEditor:
         return data
 
     def regist(self, path, title, composer):
-        path = Path("/pdf") / Path(path).name
         cur = self.connect.cursor()
         cmd = """INSERT INTO song (title,composer,path) VALUES (?,?,?)"""
         cur.execute(cmd, (title, composer, str(path)))
@@ -52,21 +62,20 @@ class DbEditor:
     #     return title, composer
 
     def clear(self):
-        print("clear")
         cur = self.connect.cursor()
         cmd = "SELECT id,path FROM song"
         rows = cur.execute(cmd)
         for row in rows:
             pid = row[0]
-            path = PUBLIC_DIR / Path(row[1][1:])
+            path = Path(row[1])
             if not path.is_file():
                 self.delete_by_pid(pid)
+                logger.debug(f"{path} is not in db. so it's deleted.")
 
     def delete_by_pid(self, pid):
         cur = self.connect.cursor()
         cmd = f"DELETE FROM song WHERE id=={pid}"
         cur.execute(cmd)
-        print("delete", pid)
 
     def init_db(self):
         cur = self.connect.cursor()
@@ -82,7 +91,7 @@ class DbEditor:
         )"""
         cur.execute(cmd)
         # insert
-        path_list = glob.glob(str(PUBLIC_DIR / "pdf/") + "*.pdf")
+        path_list = glob.glob(str(self.pdf_dir / "*.pdf"))
         for path in path_list:
             title, composer = self.get_song_info(path)
             cmd = """INSERT INTO song (title,composer,path) VALUES (?,?,?)""", (

@@ -1,5 +1,6 @@
 """ Server for ScoreTube """
 import json
+import logging
 import os
 import shutil
 import sys
@@ -8,15 +9,23 @@ from pathlib import Path
 from flask import Flask, g, jsonify, request
 from flask_cors import CORS
 
-sys.path.append(str(Path(__file__).parent))
 import const
+
+sys.path.append(str(Path(__file__).parent))
 from db_editor import DbEditor
 
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
+logger = logging.getLogger(__file__)
 app = Flask(__name__)
 CORS(app)
 
-DATA_BASE = Path(__file__).parent / const.DATA_BASE
-PUBLIC_DIR = Path(__file__).parent / const.PUBLIC_DIR
+
+# DB_DIR = Path(__file__).parent / const.DB_DIR
+# PDF_DIR = Path(__file__).parent / const.PDF_DIR
+DB_DIR = Path(__file__).parent / os.environ["DB_DIR"]
+PDF_DIR = Path(__file__).parent / os.environ["PDF_DIR"]
+DB_DIR.mkdir(exist_ok=True, parents=True)
+PDF_DIR.mkdir(exist_ok=True, parents=True)
 
 
 def connect_db():
@@ -26,7 +35,7 @@ def connect_db():
     """
     db_connect = getattr(g, "_database", None)
     if db_connect is None:
-        g._database = DbEditor()
+        g._database = DbEditor(PDF_DIR, DB_DIR)
         db_connect = g._database
     return db_connect
 
@@ -61,7 +70,7 @@ def pool_file(file):
     Returns:
         str: 一時保存先パス
     """
-    out_dir = Path(PUBLIC_DIR) / "pdf/tmp"
+    out_dir = PDF_DIR / "tmp"
     out_dir.mkdir(exist_ok=True)
     out_path = change_duplicate_name(out_dir / file.filename)
     file.save(out_path)
@@ -75,8 +84,10 @@ def regist_pool():
     try:
         out_path = pool_file(request.files["file"])
         pdf_pool.append(out_path)
+        logger.debug(out_path)
         response["error"] = None
     except (ValueError, AttributeError) as e:
+        logger.error(e)
         response["error"] = str(e)
 
     return jsonify(response), 200
@@ -89,7 +100,9 @@ def regist_reset():
         global pdf_pool
         pdf_pool = []
         response["error"] = None
+        logger.debug("clear tmp-regist")
     except (ValueError, AttributeError) as e:
+        logger.error(e)
         response["error"] = str(e)
 
     return jsonify(response), 200
@@ -108,9 +121,11 @@ def regist_commit():
             new_path = path.replace("/tmp/", "/")
             connect.regist(new_path, title, composer)
             shutil.move(path, new_path)
-            print("commit", new_path, title, composer)
+            logger.debug(f"commit {new_path}, title:{title}, composer:{composer}")
+        logger.debug("regist commit")
         response["error"] = None
     except (ValueError, AttributeError, AssertionError) as e:
+        logger.error(e)
         response["error"] = str(e)
 
     return jsonify(response), 200
@@ -123,10 +138,11 @@ def search():
         search_query = request.args.get("s_query")
         q_type = request.args.get("q_type")
         connect = connect_db()
+        logger.debug(f"search:{search_query},q_type:{q_type}")
         response["queryResults"] = connect.search(search_query, q_type)
         response["error"] = None
     except (ValueError, AttributeError) as e:
-        response["queryResults"] = {"key": [], "title": [], "composer": [], "path": []}
+        logger.error(e)
         response["error"] = str(e)
 
     return jsonify(response), 200
@@ -141,4 +157,5 @@ def close_connection(exception):
 
 
 if __name__ == "__main__":
-    app.run(const.SERVER_HOST, port=const.SERVER_PORT)
+    app.run(os.environ["HOST"], port=os.environ["PORT"])
+    # app.run(const.HOST, const.PORT)
