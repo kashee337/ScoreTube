@@ -80,6 +80,7 @@ def pool_file(file):
 
 @app.route("/regist_pool", methods=["POST"])
 def regist_pool():
+    """ pdfを仮保存する """
     response = {}
     try:
         out_path = pool_file(request.files["file"])
@@ -95,9 +96,12 @@ def regist_pool():
 
 @app.route("/regist_reset")
 def regist_reset():
+    """ 仮保存情報をresetする """
     response = {}
     try:
         global pdf_pool
+        for path in pdf_pool:
+            os.remove(path)
         pdf_pool = []
         response["error"] = None
         logger.debug("clear tmp-regist")
@@ -110,6 +114,7 @@ def regist_reset():
 
 @app.route("/regist_commit", methods=["POST"])
 def regist_commit():
+    """ 仮保存ファイルを本保存し、情報をdbに書き込む """
     response = {}
     try:
         global pdf_pool
@@ -123,6 +128,7 @@ def regist_commit():
             connect.regist(new_path, title, composer)
             shutil.move(path, new_path)
             logger.debug(f"commit {new_path}, title:{title}, composer:{composer}")
+
         pdf_pool = []
         logger.debug("regist commit")
         response["error"] = None
@@ -133,8 +139,29 @@ def regist_commit():
     return jsonify(response), 200
 
 
+@app.route("/delete")
+def delete():
+    """ 登録済みのファイルを削除する """
+    response = {}
+    try:
+        path = request.args.get("path")
+        logger.debug(f"delete {path}")
+
+        connect = connect_db()
+        connect.delete_by_path(path)
+        os.remove(path)
+        response["queryResults"] = connect.search("", "title")
+        response["error"] = None
+    except (ValueError, AttributeError) as e:
+        logger.error(e)
+        response["error"] = str(e)
+
+    return jsonify(response), 200
+
+
 @app.route("/search")
 def search():
+    """ q_type(title or composer)でquery検索 """
     response = {}
     try:
         search_query = request.args.get("s_query")
