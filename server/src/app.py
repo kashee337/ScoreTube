@@ -112,6 +112,7 @@ def regist_reset():
 def regist_commit():
     response = {}
     try:
+        global pdf_pool
         data = request.data.decode("utf-8")
         data = json.loads(data)
         assert "title" in data.keys() and "composer" in data.keys(), "hoge"
@@ -122,6 +123,7 @@ def regist_commit():
             connect.regist(new_path, title, composer)
             shutil.move(path, new_path)
             logger.debug(f"commit {new_path}, title:{title}, composer:{composer}")
+        pdf_pool = []
         logger.debug("regist commit")
         response["error"] = None
     except (ValueError, AttributeError, AssertionError) as e:
