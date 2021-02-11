@@ -9,18 +9,22 @@ import RegistForm from "./RegistForm";
 
 const RegistModal = () => {
     const dispatch = useDispatch();
+
     const regist_pool = useSelector(state => state.regist.regist_pool);
     const edit_info = useSelector(state => state.regist.edit_info);
-
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const showModal = () => {
+        resetRegist();
         setVisible(true);
     };
 
     const handleCancel = () => {
+        resetRegist();
         setVisible(false);
+    }
+    const resetRegist = () => {
         const url = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/regist_reset`
         axios.get(url, { timeout: 1000 })
             .then(res => { console.log("reset regist pool") })
@@ -29,7 +33,6 @@ const RegistModal = () => {
                 message.error("接続エラーです。");
             });
     }
-
     const handleEdit = () => {
         dispatch(setEditPool(edit_info));
         dispatch(setEditting(true));
@@ -48,6 +51,7 @@ const RegistModal = () => {
             });
         return
     }
+
     const handleSubmit = () => {
         var data = { "title": [], composer: [] }
         for (let ei of edit_info) {
@@ -64,7 +68,8 @@ const RegistModal = () => {
         setTimeout(() => {
             setLoading(false);
             setVisible(false);
-        }, 3000);
+            console.log("timeout");
+        }, 5000);
     };
 
     const editDisableCheck = () => {
