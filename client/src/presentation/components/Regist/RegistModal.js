@@ -24,6 +24,7 @@ const RegistModal = () => {
         resetRegist();
         setVisible(false);
     }
+    // 一時情報の削除
     const resetRegist = () => {
         const url = `${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}/regist_reset`
         axios.get(url, { timeout: 1000 })
@@ -58,18 +59,18 @@ const RegistModal = () => {
             data["title"].push(ei.title);
             data["composer"].push(ei.composer);
         }
-        commitRegist(data)
-        console.log("commit", data);
-
         dispatch(resetEditInfo);
         dispatch(resetEditPool);
 
+        commitRegist(data)
+        console.log("commit", data);
+
+        // loading表示処理
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
             setVisible(false);
-            console.log("timeout");
-        }, 5000);
+        }, 1000);
     };
 
     const editDisableCheck = () => {
