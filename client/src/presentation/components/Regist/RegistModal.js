@@ -26,6 +26,7 @@ const RegistModal = () => {
             .then(res => { console.log("reset regist pool") })
             .catch((e) => {
                 console.log("connection error");
+                message.error("接続エラーです。");
             });
     }
 
@@ -43,6 +44,7 @@ const RegistModal = () => {
             })
             .catch((e) => {
                 console.log("connection error");
+                message.error("接続エラーです。");
             });
         return
     }
@@ -69,7 +71,7 @@ const RegistModal = () => {
         return !(regist_pool.length > 0);
     }
     const submitDisableCheck = () => {
-        return edit_info.length == 0 || edit_info.some(value => value.title.length == 0) || !(regist_pool.length > 0);
+        return edit_info.length === 0 || edit_info.some(value => value.title.length === 0) || !(regist_pool.length > 0);
     }
 
     return (

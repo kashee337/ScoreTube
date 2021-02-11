@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input, message } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setVideoItems } from "../../../features/video/videoSlice";
@@ -22,6 +22,7 @@ const VideoSearchFrom = () => {
             dispatch(setVideoItems(res.data.items))
         }).catch((e) => {
             console.log("connection error");
+            message.error("接続エラーです。");
         });
     }
 

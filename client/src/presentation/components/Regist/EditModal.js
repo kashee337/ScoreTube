@@ -2,9 +2,9 @@ import { Button, message, Modal } from 'antd';
 import 'antd/dist/antd.css';
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
-// import setEditInfo from "../../../features/regist/registSlice";
 import { resetEditPool, setEditInfo, setEditting } from "../../../features/regist/registSlice";
 import EditForm from "./EditForm";
+
 const EditModal = () => {
     const dispatch = useDispatch();
     const isEditting = useSelector(state => state.regist.isEditting);
@@ -18,7 +18,7 @@ const EditModal = () => {
         dispatch(setEditInfo(edit_pool))
         dispatch(setEditting(false));
         message.info("編集結果を一時保存しました")
-        if (edit_pool.some(value => value.title.length == 0)) {
+        if (edit_pool.some(value => value.title.length === 0)) {
             message.warn("未編集の項目があります")
         }
     };

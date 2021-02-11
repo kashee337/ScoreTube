@@ -36,7 +36,7 @@ const Video = () => {
             />
 
             <Space size={[5, 5]}>
-                <Button disabled={videoNumber == 0}
+                <Button disabled={videoNumber === 0}
                     onClick={previousVideo}
                 >
                     Previous

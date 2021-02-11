@@ -1,5 +1,5 @@
 import { InboxOutlined } from '@ant-design/icons';
-import { Upload } from 'antd';
+import { message, Upload } from 'antd';
 import { useDispatch } from "react-redux";
 import { setRegistPool } from "../../../features/regist/registSlice";
 const { Dragger } = Upload;
@@ -8,7 +8,6 @@ const RegistForm = () => {
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        // console.log(e.fileList);
         const regist_pool = e.fileList.map(val => val.name);
         console.log(regist_pool)
 
@@ -22,9 +21,13 @@ const RegistForm = () => {
         directory: true,
         accept: "application/pdf"
     }
+    const handleError = () => {
+        message.error("問題が発生しました。");
+        console.log("unknown error");
+    }
     return (
         <>
-            <Dragger {...props}>
+            <Dragger {...props} onError={handleError}>
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                 </p>

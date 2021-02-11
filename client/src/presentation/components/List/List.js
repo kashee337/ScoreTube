@@ -17,7 +17,7 @@ const SongList = (props) => {
 
   const handleClick = (value) => {
     const [path, title, composer] = value;
-    console.log("select", title);
+    console.log("select", title, composer, path);
     dispatch(setPdfPath(path));
 
     // search video
@@ -59,6 +59,7 @@ const SongList = (props) => {
         bordered
         dataSource={titleList}
         renderItem={renderItem}
+        style={{ background: "gray" }}
       />
     </div>
   )
