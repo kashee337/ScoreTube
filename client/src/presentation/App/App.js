@@ -1,6 +1,7 @@
-import { Col, Layout, Row } from 'antd';
+import { Layout } from 'antd';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import SplitPane, { Pane } from 'react-split-pane';
 import ToolHeader from '../components/Header/ToolHeader';
 import List from "../components/List/List";
 import Pdf from "../components/Pdf/Pdf";
@@ -8,33 +9,30 @@ import Video from "../components/Video/Video";
 import './App.css';
 
 
-const { Content } = Layout;
-
 const App = () => {
 
   const isSearch = useSelector(state => state.search.isSearch);
   const pdf_path = useSelector(state => state.search.pdfPath);
 
   const LeftContent = isSearch ? <List /> : <Pdf pdf_path={pdf_path} />;
-  const LeftClassName = isSearch ? "App-list" : "App-pdf";
   return (
     <div className="App">
       <Layout>
         <ToolHeader></ToolHeader>
-        <Layout>
-          <Content className="App-content">
-            <Row>
-              <Col span={10} className={LeftClassName}>
+        <div className="App-content">
+          <Layout>
+            <SplitPane split="vertical" minSize="10%" maxsize="90%" defaultSize="50%">
+              <Pane>
                 {LeftContent}
-              </Col>
-              <Col span={14}>
+              </Pane>
+              <Pane>
                 <Video />
-              </Col>
-            </Row>
-          </Content>
-        </Layout>
+              </Pane>
+            </SplitPane>
+          </Layout>
+        </div>
       </Layout>
-    </div>
+    </div >
   );
 
 }
